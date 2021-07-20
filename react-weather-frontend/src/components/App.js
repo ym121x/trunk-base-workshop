@@ -5,26 +5,26 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Weather from "./Weather";
 import NavBar from "./NavBar";
-import {weatherIconsProvider} from "./ProvideIcon";
+import { weatherIconsProvider } from "./ProvideIcon";
 
 const REACT_APP_API_URL = "http://localhost:3010";
-
+// yael
 export default function App() {
   const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   const [currentWeather, setCurrentWeather] = useState({});
   const [forecast, setForecast] = useState([]);
-  const [features, setFeatures] = useState({})
+  const [features, setFeatures] = useState({});
 
   useEffect(() => {
     getFeatures()
-        .then(data => {
-          setFeatures(data);
-          setError(null);
-        })
-        .catch(err => {
-          setError(err.message);
-        });
+      .then(data => {
+        setFeatures(data);
+        setError(null);
+      })
+      .catch(err => {
+        setError(err.message);
+      });
   }, []);
 
   useEffect(() => {
@@ -119,31 +119,29 @@ function getCurrentLocation() {
 }
 
 export async function getWeatherOrForecastUrl(city, type) {
-
   if (city) {
-    return `${REACT_APP_API_URL}/${type}?city=${city}`
+    return `${REACT_APP_API_URL}/${type}?city=${city}`;
   }
 
   try {
     const location = await getCurrentLocation();
     let url = `${REACT_APP_API_URL}/${type}ByCoord?lat=${location.coords.latitude}&lon=${location.coords.longitude}`;
-    console.log(`url: ${url}`)
+    console.log(`url: ${url}`);
     return url;
   } catch (error) {
-    console.log(`oh oh, error: ${JSON.stringify(error)}`)
+    console.log(`oh oh, error: ${JSON.stringify(error)}`);
     return `${REACT_APP_API_URL}/${type}`;
   }
 }
 
-
 function getFeatures() {
-   return fetch(`${REACT_APP_API_URL}/features`)
-        .then(res => handleResponse(res));
+  return fetch(`${REACT_APP_API_URL}/features`).then(res =>
+    handleResponse(res)
+  );
 }
 
 function getWeather(city) {
-
-  return getWeatherOrForecastUrl(city, 'weather')
+  return getWeatherOrForecastUrl(city, "weather")
     .then(url => fetch(url))
     .then(res => handleResponse(res))
     .then(weather => {
@@ -154,8 +152,7 @@ function getWeather(city) {
 }
 
 function getForecast(city) {
-
-  return getWeatherOrForecastUrl(city, 'forecast')
+  return getWeatherOrForecastUrl(city, "forecast")
     .then(url => fetch(url))
     .then(res => handleResponse(res))
     .then(result => {
